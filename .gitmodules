@@ -1,0 +1,3 @@
+[submodule "matrix-creator-hal-sys/matrix-creator-hal"]
+	path = matrix-creator-hal-sys/matrix-creator-hal
+	url = https://github.com/matrix-io/matrix-creator-hal.git

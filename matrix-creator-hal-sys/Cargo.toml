@@ -1,0 +1,21 @@
+[package]
+name = "matrix-creator-hal-sys"
+version = "0.1.0"
+authors = ["jeikabu <jeikabu@users.noreply.github.com>"]
+edition = "2018"
+
+description = "matrix-creator-hal"
+repository = "https://github.com/jeikabu/matrix-io"
+keywords = []
+categories = []
+license = "MIT"
+
+[features]
+default = []
+bindgen_generate = ["bindgen"]
+
+[dependencies]
+
+[build-dependencies]
+cmake = {version = "0.1"}
+bindgen = {version = "0.52", optional = true}
