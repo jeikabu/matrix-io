@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+set -e
+
+FLAGS=""
+FLAGS+=" --sysroot=${ESP_PATH}/xtensa-esp32-elf/sysroot"
+# This replaces the original `${PROJECT}/build/include` path
+FLAGS+=" -I./build/include"
+FLAGS+=" -I${ESP_PATH}/xtensa-esp32-elf/include/c++/5.2.0/"
+FLAGS+=" -I${ESP_PATH}/xtensa-esp32-elf/include/c++/5.2.0/xtensa-esp32-elf/"
+FLAGS+=" -Imatrixio_hal_esp32/components/hal/"
+FLAGS+=" -D__bindgen"
+FLAGS+=" -target xtensa"
+#FLAGS+=" -x c++"
+
+while read -r include; do
+	FLAGS+=" -I${include}"
+done <<< "$(find "${IDF_PATH}/components" -maxdepth 4 -name include)"
+
+# Not picked up from above
+FLAGS+=" -I${IDF_PATH}/components/lwip/lwip/src/include"
+FLAGS+=" -I${IDF_PATH}/components/lwip/port/esp32/include"
+FLAGS+=" -I${IDF_PATH}/components/newlib/platform_include"
+FLAGS+=" -I${IDF_PATH}/components/lwip/include/apps"
+
+: "${BINDGEN_FLAGS:=--use-core --no-layout-tests --enable-cxx-namespaces}"
+
+#shellcheck disable=SC2086
+bindgen $BINDGEN_FLAGS --output src/bindings.rs wrapper.hpp --ctypes-prefix cty --whitelist-type 'matrix_.*' --whitelist-function 'matrix_.*' --whitelist-var 'matrix_.*' --whitelist-function 'ets_.*' --with-derive-default -- $FLAGS
+
+# FIXME:
+# Bindgen can't handle `valarray`.
+# Once we can use bindgen via `build.rs` can replace this with `bindgen::callbacks::ParseCallbacks` impl
+sed -i 's/valarray__UnaryOp__Rt/valarray__UnaryOp__Rt<_Clos>/g' src/bindings.rs

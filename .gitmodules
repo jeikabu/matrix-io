@@ -1,3 +1,6 @@
 [submodule "matrix-creator-hal-sys/matrix-creator-hal"]
 	path = matrix-creator-hal-sys/matrix-creator-hal
 	url = https://github.com/matrix-io/matrix-creator-hal.git
+[submodule "matrix_hal_esp32_sys/matrixio_hal_esp32"]
+	path = matrix_hal_esp32_sys/matrixio_hal_esp32
+	url = https://github.com/matrix-io/matrixio_hal_esp32

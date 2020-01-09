@@ -1,2 +1,9 @@
 /target
 **/*.rs.bk
+.cargo/
+
+/Cargo.lock
+
+matrix_hal_esp32_sys/build/
+matrix_hal_esp32_sys/main/
+matrix_hal_esp32_sys/sdkconfig
