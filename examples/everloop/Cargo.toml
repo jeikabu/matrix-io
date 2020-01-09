@@ -1,0 +1,10 @@
+[package]
+name = "everloop"
+version = "0.1.0"
+authors = ["jeikabu <jeikabu@users.noreply.github.com>"]
+edition = "2018"
+
+[dependencies]
+matrix_hal_esp32_sys = {path = "../../matrix_hal_esp32_sys"}
+libm = "0.2" # For sin()
+cty = {version = "0.2"}

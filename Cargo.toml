@@ -1,5 +1,18 @@
 [workspace]
 members = [
-    "matrix-creator-hal-sys",
-    "matrix-voice",
+    "matrix_hal_esp32_sys",
+
+    "examples/everloop",
 ]
+
+[profile.dev]
+lto = false 
+incremental = false
+debug = false # debug adds frame pointers - which must be omitted
+codegen-units = 1
+
+[profile.release]
+lto = false
+incremental = false
+debug = false # debug adds frame pointers - which must be omitted
+codegen-units = 1

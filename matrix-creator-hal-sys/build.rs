@@ -11,14 +11,16 @@ fn link_nng() {
     // Check output of `cargo build --verbose`, should see something like:
     // -L native=/path/runng/target/debug/build/runng-sys-abc1234/out
     // That contains output from cmake
-    println!(
-        "cargo:rustc-link-search=native={}",
-        dst.join("lib").display()
-    );
-    println!(
-        "cargo:rustc-link-search=native={}",
-        dst.join("lib64").display()
-    );
+    // println!(
+    //     "cargo:rustc-link-search=native={}",
+    //     dst.join("lib").display()
+    // );
+    // println!(
+    //     "cargo:rustc-link-search=native={}",
+    //     dst.join("lib64").display()
+    // );
+
+    println!("cargo:rustc-link-lib=dylib=matrix_creator_hal");
 }
 
 #[cfg(feature = "bindgen_generate")]
@@ -36,11 +38,14 @@ fn bindgen_generate() {
             non_exhaustive: false,
         })
         .use_core()
+        .whitelist_function("matrix_.*")
+        .whitelist_type("matrix_.*")
+        .whitelist_var("matrix_.*")
         // Layout tests are non-portable; 64-bit tests are "wrong" size on 32-bit and always fail.
         // Don't output tests if we're regenerating `src/bindings.rs` (shared by all platforms when bindgen not used)
         .layout_tests(!cfg!(feature = "source-update-bindings"));
 
-    if cfg!(feature = "no_std") {
+    if !cfg!(feature = "std") {
         // no_std support
         // https://rust-embedded.github.io/book/interoperability/c-with-rust.html#automatically-generating-the-interface
         builder = builder.ctypes_prefix("cty")
